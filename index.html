@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Staples — Superfast List</title>
+<style>
+  :root{--radius:14px}
+  *{box-sizing:border-box}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;padding:16px;max-width:720px}
+  h1{font-size:22px;margin:0 0 12px}
+  .tabs{display:flex;gap:8px;margin-bottom:12px}
+  .tab{flex:1;padding:10px;border:1px solid #ddd;border-radius:var(--radius);text-align:center;cursor:pointer}
+  .tab.active{border-color:#000;font-weight:600}
+  .row{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #eee}
+  .row:last-child{border-bottom:none}
+  .name{flex:1}
+  button{padding:8px 10px;border:1px solid #ddd;border-radius:var(--radius);background:#fff;cursor:pointer}
+  .pill{border-radius:999px;padding:4px 10px}
+  .controls{display:flex;gap:6px}
+  .inputRow{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+  input, select{flex:1;padding:10px;border:1px solid #ddd;border-radius:var(--radius)}
+  .small{font-size:12px;color:#666}
+  .toolbar{position:sticky;bottom:0;background:#fff;padding:10px 0;border-top:1px solid #eee;display:flex;gap:8px}
+</style>
+</head>
+<body>
+<h1>Staples</h1>
+
+<div class="tabs">
+  <div id="tabBuy" class="tab active">Buy</div>
+  <div id="tabStaples" class="tab">Staples</div>
+</div>
+
+<div id="screenBuy">
+  <div id="buyList"></div>
+  <div class="toolbar">
+    <button id="copyList">Copy list</button>
+    <button id="clearBought">Mark all bought</button>
+    <button id="goStaples">+ Add staple</button>
+  </div>
+</div>
+
+<div id="screenStaples" style="display:none">
+  <div class="inputRow">
+    <input id="newName" placeholder="Add new staple (e.g., Milk)" />
+    <input id="newQty" type="number" min="1" value="1" style="max-width:90px"/>
+    <select id="newUnit" style="max-width:130px">
+      <option value="">unit</option>
+      <option>pcs</option><option>pack</option><option>kg</option><option>L</option>
+    </select>
+    <button id="addStaple">Add</button>
+  </div>
+  <div class="inputRow">
+    <input id="search" placeholder="Search staples…" />
+  </div>
+  <div id="staplesList"></div>
+  <p class="small">Tip: tap qty to bump; “+ Buy” adds it to today’s list.</p>
+</div>
+
+<script>
+const SKEY = 'staples.v1';
+let state = load();
+
+function load(){ try { return JSON.parse(localStorage.getItem(SKEY)) || {items:[]}; } catch(e){ return {items:[]}; } }
+function save(){ localStorage.setItem(SKEY, JSON.stringify(state)); render(); }
+
+function uid(){ return Math.random().toString(36).slice(2,9); }
+
+function addStaple(name, qty=1, unit=''){
+  if(!name.trim()) return;
+  state.items.push({id:uid(), name:name.trim(), defaultQty:+qty||1, unit, notes:'', lastBoughtAt:null, buyNowQty:0});
+  save();
+}
+function addToBuy(id, qty){
+  const it = state.items.find(i=>i.id===id);
+  if(!it) return;
+  it.buyNowQty = (it.buyNowQty||0) + (qty||it.defaultQty||1);
+  save();
+}
+function bumpQty(id, list='staples'){
+  const it = state.items.find(i=>i.id===id);
+  if(!it) return;
+  if(list==='staples'){ it.defaultQty = (it.defaultQty||1) + 1; }
+  else { it.buyNowQty = (it.buyNowQty||1) + 1; }
+  save();
+}
+function markBought(id){
+  const it = state.items.find(i=>i.id===id);
+  if(!it) return;
+  it.lastBoughtAt = new Date().toISOString();
+  it.buyNowQty = 0;
+  save();
+}
+function copyCurrentList(){
+  const lines = state.items
+    .filter(i=>i.buyNowQty>0)
+    .map(i => `${i.name} ${i.buyNowQty}${i.unit? ' ' + i.unit : ''}`)
+    .join('\n');
+  navigator.clipboard.writeText(lines || '(empty)').then(()=> alert('List copied. Paste into your supermarket app.'));
+}
+function clearAllBought(){
+  state.items.forEach(i=>{ if(i.buyNowQty>0){ i.lastBoughtAt=new Date().toISOString(); i.buyNowQty=0; }});
+  save();
+}
+function render(){
+  // Buy screen
+  const buy = document.getElementById('buyList');
+  const buyItems = state.items.filter(i=>i.buyNowQty>0).sort((a,b)=>a.name.localeCompare(b.name));
+  buy.innerHTML = buyItems.map(i=>`
+    <div class="row">
+      <div class="name"><strong>${i.name}</strong> <span class="small">${i.unit||''}</span><br>
+        <span class="small">${i.lastBoughtAt ? 'last: ' + new Date(i.lastBoughtAt).toLocaleDateString() : ''}</span>
+      </div>
+      <div class="controls">
+        <button class="pill" onclick="bumpQty('${i.id}','buy')">+${i.buyNowQty}</button>
+        <button onclick="markBought('${i.id}')">Bought</button>
+      </div>
+    </div>
+  `).join('') || '<p class="small">Your Buy list is empty. Add items from Staples.</p>';
+
+  // Staples screen
+  const q = document.getElementById('search').value?.toLowerCase() || '';
+  const list = document.getElementById('staplesList');
+  const staples = state.items
+    .filter(i=>i.name.toLowerCase().includes(q))
+    .sort((a,b)=>a.name.localeCompare(b.name));
+  list.innerHTML = staples.map(i=>`
+    <div class="row">
+      <div class="name"><strong>${i.name}</strong> <span class="small">${i.defaultQty}${i.unit? ' ' + i.unit : ''}</span></div>
+      <div class="controls">
+        <button class="pill" onclick="bumpQty('${i.id}','staples')">+${i.defaultQty}</button>
+        <button onclick="addToBuy('${i.id}')">+ Buy</button>
+      </div>
+    </div>
+  `).join('') || '<p class="small">No staples yet — add above.</p>';
+}
+
+// Tab logic
+const tabBuy = document.getElementById('tabBuy');
+const tabStaples = document.getElementById('tabStaples');
+const screenBuy = document.getElementById('screenBuy');
+const screenStaples = document.getElementById('screenStaples');
+
+function show(tab){
+  if(tab==='buy'){ tabBuy.classList.add('active'); tabStaples.classList.remove('active'); screenBuy.style.display='block'; screenStaples.style.display='none'; }
+  else { tabStaples.classList.add('active'); tabBuy.classList.remove('active'); screenStaples.style.display='block'; screenBuy.style.display='none'; }
+}
+tabBuy.onclick=()=>show('buy');
+tabStaples.onclick=()=>show('staples');
+document.getElementById('goStaples').onclick=()=>show('staples');
+
+document.getElementById('addStaple').onclick=()=>{
+  addStaple(document.getElementById('newName').value, document.getElementById('newQty').value, document.getElementById('newUnit').value);
+  document.getElementById('newName').value=''; document.getElementById('newQty').value=1; document.getElementById('newUnit').value='';
+};
+document.getElementById('search').oninput=render;
+document.getElementById('copyList').onclick=copyCurrentList;
+document.getElementById('clearBought').onclick=clearAllBought;
+
+render();
+
+// PWA basics
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }
+</script>
+</body>
+</html>
