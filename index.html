@@ -77,6 +77,22 @@ function addStaple(name, qty=1, unit=''){
   state.items.push({id:uid(), name:name.trim(), defaultQty:+qty||1, unit, notes:'', lastBoughtAt:null, buyNowQty:0});
   save();
 }
+function decreaseQty(id){
+  const it = state.items.find(i=>i.id===id);
+  if(!it) return;
+  if(it.buyNowQty > 1){
+    it.buyNowQty -= 1;
+  } else {
+    it.buyNowQty = 0; // remove if it drops to 0
+  }
+  save();
+}
+function decreaseDefaultQty(id){
+  const it = state.items.find(i=>i.id===id);
+  if(!it) return;
+  it.defaultQty = Math.max(1, (it.defaultQty || 1) - 1); // never below 1
+  save();
+}
 function addToBuy(id, qty){
   const it = state.items.find(i=>i.id===id);
   if(!it) return;
@@ -118,6 +134,7 @@ function render(){
         <span class="small">${i.lastBoughtAt ? 'last: ' + new Date(i.lastBoughtAt).toLocaleDateString() : ''}</span>
       </div>
       <div class="controls">
+	<button onclick="decreaseQty('${i.id}')">−</button>
         <button class="pill" onclick="bumpQty('${i.id}','buy')">+${i.buyNowQty}</button>
         <button onclick="markBought('${i.id}')">Bought</button>
       </div>
@@ -133,10 +150,11 @@ function render(){
   list.innerHTML = staples.map(i=>`
     <div class="row">
       <div class="name"><strong>${i.name}</strong> <span class="small">${i.defaultQty}${i.unit? ' ' + i.unit : ''}</span></div>
-      <div class="controls">
-        <button class="pill" onclick="bumpQty('${i.id}','staples')">+${i.defaultQty}</button>
-        <button onclick="addToBuy('${i.id}')">+ Buy</button>
-      </div>
+     	<div class="controls">
+  		<button onclick="decreaseDefaultQty('${i.id}')">−</button>
+ 		 <button class="pill" onclick="bumpQty('${i.id}','staples')">+${i.defaultQty}</button>
+ 		 <button onclick="addToBuy('${i.id}')">+ Buy</button>
+		</div>
     </div>
   `).join('') || '<p class="small">No staples yet — add above.</p>';
 }
