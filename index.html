@@ -32,6 +32,9 @@
 <body>
 <h1>Staples</h1>
 
+<!-- e.g., near <h1> -->
+<small class="small">v6</small>
+
 <div class="tabs">
   <div id="tabBuy" class="tab active">Buy</div>
   <div id="tabStaples" class="tab">Staples</div>
@@ -189,7 +192,33 @@ document.getElementById('clearBought').onclick=clearAllBought;
 render();
 
 // PWA basics
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js')<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').then(reg => {
+    // Check for updates on load
+    reg.update();
+
+    // If a new SW is waiting, tell it to activate, then reload page when active
+    if (reg.waiting) {
+      reg.waiting.postMessage('SKIP_WAITING');
+    }
+    reg.addEventListener('updatefound', () => {
+      const newSW = reg.installing;
+      newSW?.addEventListener('statechange', () => {
+        if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+          newSW.postMessage('SKIP_WAITING');
+        }
+      });
+    });
+
+    // When the active SW changes, reload once to get fresh files
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      window.location.reload();
+    });
+  });
+}
+</script>
+; }
 </script>
 </body>
 </html>
