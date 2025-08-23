@@ -1,4 +1,4 @@
-const CACHE = 'staples-v1';
+const CACHE = 'staples-v3';
 const ASSETS = ['./','./index.html','./manifest.webmanifest','./sw.js','./icons/icon-192.png','./icons/icon-512.png'];
 
 self.addEventListener('install', (e) => {
