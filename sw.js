@@ -1,5 +1,5 @@
 // sw.js — auto-update + network-first for index.html
-const CACHE = 'staples-v6';
+const CACHE = 'staples-v7';
 const ASSETS = [
   './',
   './index.html',

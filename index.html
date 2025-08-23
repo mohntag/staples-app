@@ -33,7 +33,7 @@
 <h1>Staples</h1>
 
 <!-- e.g., near <h1> -->
-<small class="small">v6</small>
+<small class="small">v7</small>
 
 <div class="tabs">
   <div id="tabBuy" class="tab active">Buy</div>
@@ -191,8 +191,8 @@ document.getElementById('clearBought').onclick=clearAllBought;
 
 render();
 
-// PWA basics
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js')<script>
+<!-- PWA basics -->
+<script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').then(reg => {
     // Check for updates on load
@@ -217,8 +217,7 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
-</script>
-; }
+
 </script>
 </body>
 </html>
