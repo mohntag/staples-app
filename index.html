@@ -77,6 +77,10 @@ function addStaple(name, qty=1, unit=''){
   state.items.push({id:uid(), name:name.trim(), defaultQty:+qty||1, unit, notes:'', lastBoughtAt:null, buyNowQty:0});
   save();
 }
+function deleteStaple(id){
+  state.items = state.items.filter(i => i.id !== id);
+  save();
+}
 function decreaseQty(id){
   const it = state.items.find(i=>i.id===id);
   if(!it) return;
@@ -152,9 +156,10 @@ function render(){
       <div class="name"><strong>${i.name}</strong> <span class="small">${i.defaultQty}${i.unit? ' ' + i.unit : ''}</span></div>
      	<div class="controls">
   		<button onclick="decreaseDefaultQty('${i.id}')">−</button>
- 		 <button class="pill" onclick="bumpQty('${i.id}','staples')">+${i.defaultQty}</button>
- 		 <button onclick="addToBuy('${i.id}')">+ Buy</button>
-		</div>
+ 		<button class="pill" onclick="bumpQty('${i.id}','staples')">+${i.defaultQty}</button>
+ 		<button onclick="addToBuy('${i.id}')">+ Buy</button>
+		<button onclick="deleteStaple('${i.id}')">❌</button>
+	</div>
     </div>
   `).join('') || '<p class="small">No staples yet — add above.</p>';
 }
