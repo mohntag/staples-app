@@ -1,5 +1,5 @@
-// sw.js for Staples v13
-const CACHE = 'staples-v13';
+// sw.js for Staples v14
+const CACHE = 'staples-v14';
 const ASSETS = [
   './',
   './index.html',
