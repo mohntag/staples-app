@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#ffffff">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Staples — Quick Links</title>
+<style>
+  :root{--r:16px}
+  *{box-sizing:border-box}
+  body{
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    margin:0;padding:16px;max-width:820px;background:#fafafa
+  }
+  h1{font-size:24px;margin:0}
+  .small{font-size:12px;color:#666}
+  .row{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap}
+  input{
+    flex:1;padding:12px;border:1px solid #ddd;border-radius:var(--r);background:#fff
+  }
+  button{
+    padding:12px 14px;border:1px solid #ddd;border-radius:var(--r);background:#fff;cursor:pointer
+  }
+  #grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+    gap:14px;margin-top:12px
+  }
+  .card{
+    background:#fff;border-radius:var(--r);padding:0;overflow:hidden;
+    box-shadow:0 2px 6px rgba(0,0,0,0.06);
+    transition:transform .08s ease, box-shadow .08s ease; position:relative
+  }
+  .card:active{transform:translateY(1px);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+  .cardBtn{
+    display:block;width:100%;padding:18px 16px;border:none;background:#007aff;color:#fff;
+    text-align:left;font-size:16px;line-height:1.2
+  }
+  .cardHost{display:block;font-size:12px;opacity:.9;margin-top:6px}
+  /* Action sheet (appears on long-press) */
+  #sheet{
+    position:fixed;inset:auto 0 0 0;background:#fff;border-top-left-radius:18px;border-top-right-radius:18px;
+    box-shadow:0 -6px 20px rgba(0,0,0,.2);padding:12px 12px 20px;display:none;z-index:9999
+  }
+  #sheet h3{margin:4px 6px 10px;font-size:16px}
+  .sheetBtns{display:flex;gap:8px}
+  .sheetBtns button{flex:1;border-radius:12px}
+  .danger{background:#ff3b30;border:none;color:#fff}
+  .primary{background:#007aff;border:none;color:#fff}
+  /* Backdrop */
+  #backdrop{
+    position:fixed;inset:0;background:rgba(0,0,0,.25);display:none;z-index:9998
+  }
+</style>
+</head>
+<body>
+<h1>Staples</h1>
+<small class="small">links v13 (long-press to Edit/Delete)</small>
+
+<div class="row">
+  <input id="search" placeholder="Search links…" />
+</div>
+
+<div class="row">
+  <input id="newName" placeholder="Add a link (e.g., Grind — House Blend Pods)" />
+  <input id="newUrl" placeholder="https://example.com/product" />
+  <button id="add">Add</button>
+  <button id="importDemo">Import demo</button>
+  <button id="export">Export</button>
+</div>
+
+<div id="grid"></div>
+
+<!-- Action sheet + backdrop -->
+<div id="backdrop"></div>
+<div id="sheet">
+  <h3 id="sheetTitle"></h3>
+  <div class="sheetBtns" style="margin-bottom:8px">
+    <button class="primary" id="sheetOpen">Open</button>
+    <button id="sheetCopy">Copy link</button>
+  </div>
+  <div class="sheetBtns">
+    <button id="sheetEdit">✏️ Edit</button>
+    <button class="danger" id="sheetDelete">❌ Delete</button>
+  </div>
+</div>
+
+<script>
+const SKEY = 'staples.links.v1';
+let links = load();
+let longPressTimer = null;
+let pressedIndex = null;
+
+function load(){ try { return JSON.parse(localStorage.getItem(SKEY)) || []; } catch(e){ return []; } }
+function save(){ localStorage.setItem(SKEY, JSON.stringify(links)); render(); }
+function host(u){ try { return new URL(u).hostname.replace(/^www\\./,''); } catch(e){ return ''; } }
+function uid(){ return Math.random().toString(36).slice(2,9); }
+
+function render(){
+  const q = (document.getElementById('search').value||'').toLowerCase();
+  const grid = document.getElementById('grid');
+  const list = links.filter(l => l.name.toLowerCase().includes(q) || (l.url||'').toLowerCase().includes(q));
+  grid.innerHTML = list.map((l, idx) => {
+    const title = l.name.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const h = host(l.url);
+    return `
+      <div class="card"
+           onpointerdown="lpStart(${idx}, event)"
+           onpointerup="lpEnd(event)"
+           onpointerleave="lpCancel()">
+        <button class="cardBtn" onclick="openLink(${idx})">
+          ${title}
+          <span class="cardHost">${h}</span>
+        </button>
+      </div>`;
+  }).join('') || '<p class="small">No links yet — add above.</p>';
+}
+
+function openLink(i){
+  const l = links[i]; if(!l || !l.url) return alert('No URL set.');
+  window.open(l.url, '_blank');
+}
+
+function addLink(name, url){
+  name = (name||'').trim();
+  url = (url||'').trim();
+  if(!name || !url) return;
+  const idx = links.findIndex(x => x.name.toLowerCase() === name.toLowerCase());
+  if(idx >= 0){ links[idx].url = url; } else { links.push({ id: uid(), name, url }); }
+  save();
+}
+
+function editLink(i){
+  const l = links[i]; if(!l) return;
+  const newName = prompt('Name', l.name);
+  if(newName !== null && newName.trim()) l.name = newName.trim();
+  const newUrl  = prompt('URL', l.url);
+  if(newUrl  !== null && newUrl.trim())  l.url  = newUrl.trim();
+  save();
+}
+
+function deleteLink(i){
+  if(!confirm('Delete this link?')) return;
+  links.splice(i,1);
+  save();
+}
+
+function importDemo(){
+  const demo = [
+    { name:"Grind — House Blend Pods", url:"https://grind.co.uk/products/grindnespressopodsbulk" },
+    { name:"Grind — House Decaf Pods", url:"https://grind.co.uk/products/grindnespressopodsbulk" },
+    { name:"Organic Walnut Halves",    url:"https://www.nutsinbulk.co.uk/product/organic-walnut-halves" },
+    { name:"Whole Pecan Halves",       url:"https://www.nutsinbulk.co.uk/product/whole-pecan-halves" },
+    { name:"Blanched Hazelnut Pieces", url:"https://www.nutsinbulk.co.uk/product/blanched-hazelnut-pieces" },
+    { name:"Whole Cashew Nuts",        url:"https://www.nutsinbulk.co.uk/product/whole-cashew-nuts" },
+    { name:"Pine Nuts Kernels",        url:"https://www.nutsinbulk.co.uk/product/pine-nuts-kernels" },
+    { name:"Sunflower Seeds",          url:"https://www.nutsinbulk.co.uk/product/sunflower-seeds" }
+  ];
+  demo.forEach(d => addLink(d.name, d.url));
+  alert('Imported demo links.');
+}
+
+function exportLinks(){
+  const text = JSON.stringify(links, null, 2);
+  navigator.clipboard.writeText(text).then(()=> alert('Exported to clipboard.'));
+}
+
+/* ---------- Long-press handling & action sheet ---------- */
+function lpStart(idx, ev){
+  pressedIndex = idx;
+  longPressTimer = setTimeout(() => { showSheet(idx); }, 520); // ~0.5s press
+}
+function lpEnd(ev){
+  clearTimeout(longPressTimer); longPressTimer = null;
+}
+function lpCancel(){
+  clearTimeout(longPressTimer); longPressTimer = null;
+}
+
+const backdrop = document.getElementById('backdrop');
+const sheet = document.getElementById('sheet');
+const sheetTitle = document.getElementById('sheetTitle');
+const bOpen = document.getElementById('sheetOpen');
+const bCopy = document.getElementById('sheetCopy');
+const bEdit = document.getElementById('sheetEdit');
+const bDel  = document.getElementById('sheetDelete');
+
+function showSheet(i){
+  const l = links[i]; if(!l) return;
+  sheetTitle.textContent = l.name;
+  sheet.style.display = 'block';
+  backdrop.style.display = 'block';
+
+  bOpen.onclick = () => { hideSheet(); openLink(i); };
+  bCopy.onclick = () => { navigator.clipboard.writeText(l.url).then(()=>{ hideSheet(); alert('Link copied'); }); };
+  bEdit.onclick = () => { hideSheet(); editLink(i); };
+  bDel.onclick  = () => { hideSheet(); deleteLink(i); };
+}
+function hideSheet(){
+  sheet.style.display = 'none';
+  backdrop.style.display = 'none';
+}
+backdrop.onclick = hideSheet;
+/* -------------------------------------------------------- */
+
+/* Wire UI */
+document.getElementById('add').onclick = () => {
+  addLink(document.getElementById('newName').value, document.getElementById('newUrl').value);
+  document.getElementById('newName').value='';
+  document.getElementById('newUrl').value='';
+};
+document.getElementById('importDemo').onclick = importDemo;
+document.getElementById('export').onclick = exportLinks;
+document.getElementById('search').oninput = render;
+
+render();
+</script>
+
+<!-- Minimal SW registration -->
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').then(reg => {
+    reg.update();
+    navigator.serviceWorker.addEventListener('controllerchange', () => location.reload());
+  });
+}
+</script>
+</body>
+</html>
