@@ -33,11 +33,11 @@
   }
   .card:active{transform:translateY(1px);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
   .cardBtn{
-    display:block;width:100%;padding:18px 16px;border:none;background:#007aff;color:#fff;
-    text-align:left;font-size:16px;line-height:1.2
+    display:block;width:100%;padding:18px 16px;border:none;
+    color:#000;text-align:left;font-size:16px;line-height:1.2
   }
-  .cardHost{display:block;font-size:12px;opacity:.9;margin-top:6px}
-  /* Action sheet (appears on long-press) */
+  .cardHost{display:block;font-size:12px;opacity:.85;margin-top:6px}
+  /* Action sheet */
   #sheet{
     position:fixed;inset:auto 0 0 0;background:#fff;border-top-left-radius:18px;border-top-right-radius:18px;
     box-shadow:0 -6px 20px rgba(0,0,0,.2);padding:12px 12px 20px;display:none;z-index:9999
@@ -55,7 +55,7 @@
 </head>
 <body>
 <h1>Staples</h1>
-<small class="small">links v13 (long-press to Edit/Delete)</small>
+<small class="small">links v14 (random colours • long-press for Edit/Delete)</small>
 
 <div class="row">
   <input id="search" placeholder="Search links…" />
@@ -96,6 +96,17 @@ function save(){ localStorage.setItem(SKEY, JSON.stringify(links)); render(); }
 function host(u){ try { return new URL(u).hostname.replace(/^www\\./,''); } catch(e){ return ''; } }
 function uid(){ return Math.random().toString(36).slice(2,9); }
 
+// Pastel random (stable per item once assigned)
+function randomColor(){
+  const hue = Math.floor(Math.random()*360);
+  return `hsl(${hue}, 70%, 82%)`;
+}
+
+function ensureColor(l){
+  if(!l.color){ l.color = randomColor(); }
+  return l.color;
+}
+
 function render(){
   const q = (document.getElementById('search').value||'').toLowerCase();
   const grid = document.getElementById('grid');
@@ -103,12 +114,14 @@ function render(){
   grid.innerHTML = list.map((l, idx) => {
     const title = l.name.replace(/</g,'&lt;').replace(/>/g,'&gt;');
     const h = host(l.url);
+    const bg = ensureColor(l);
+    const txt = '#000'; // pastels keep text readable
     return `
       <div class="card"
            onpointerdown="lpStart(${idx}, event)"
            onpointerup="lpEnd(event)"
            onpointerleave="lpCancel()">
-        <button class="cardBtn" onclick="openLink(${idx})">
+        <button class="cardBtn" style="background:${bg};color:${txt}" onclick="openLink(${idx})">
           ${title}
           <span class="cardHost">${h}</span>
         </button>
@@ -126,7 +139,12 @@ function addLink(name, url){
   url = (url||'').trim();
   if(!name || !url) return;
   const idx = links.findIndex(x => x.name.toLowerCase() === name.toLowerCase());
-  if(idx >= 0){ links[idx].url = url; } else { links.push({ id: uid(), name, url }); }
+  if(idx >= 0){
+    links[idx].url = url;
+    ensureColor(links[idx]);
+  } else {
+    links.push({ id: uid(), name, url, color: randomColor() });
+  }
   save();
 }
 
@@ -136,6 +154,7 @@ function editLink(i){
   if(newName !== null && newName.trim()) l.name = newName.trim();
   const newUrl  = prompt('URL', l.url);
   if(newUrl  !== null && newUrl.trim())  l.url  = newUrl.trim();
+  ensureColor(l);
   save();
 }
 
@@ -156,7 +175,7 @@ function importDemo(){
     { name:"Pine Nuts Kernels",        url:"https://www.nutsinbulk.co.uk/product/pine-nuts-kernels" },
     { name:"Sunflower Seeds",          url:"https://www.nutsinbulk.co.uk/product/sunflower-seeds" }
   ];
-  demo.forEach(d => addLink(d.name, d.url));
+  demo.forEach(d => addLink(d.name, d.url)); // addLink assigns random colours
   alert('Imported demo links.');
 }
 
@@ -168,14 +187,10 @@ function exportLinks(){
 /* ---------- Long-press handling & action sheet ---------- */
 function lpStart(idx, ev){
   pressedIndex = idx;
-  longPressTimer = setTimeout(() => { showSheet(idx); }, 520); // ~0.5s press
+  longPressTimer = setTimeout(() => { showSheet(idx); }, 520);
 }
-function lpEnd(ev){
-  clearTimeout(longPressTimer); longPressTimer = null;
-}
-function lpCancel(){
-  clearTimeout(longPressTimer); longPressTimer = null;
-}
+function lpEnd(ev){ clearTimeout(longPressTimer); longPressTimer = null; }
+function lpCancel(){ clearTimeout(longPressTimer); longPressTimer = null; }
 
 const backdrop = document.getElementById('backdrop');
 const sheet = document.getElementById('sheet');
