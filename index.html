@@ -4,270 +4,126 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#ffffff">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Staples — Superfast List</title>
+<title>Staples — Quick Links</title>
 <style>
-  :root{--radius:14px}
+  :root{--r:14px}
   *{box-sizing:border-box}
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;padding:16px;max-width:720px}
-  h1{font-size:22px;margin:0 0 4px}
-  .tabs{display:flex;gap:8px;margin:12px 0}
-  .tab{flex:1;padding:10px;border:1px solid #ddd;border-radius:var(--radius);text-align:center;cursor:pointer}
-  .tab.active{border-color:#000;font-weight:600}
-  .row{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #eee}
-  .row:last-child{border-bottom:none}
-  .name{flex:1}
-  button{padding:8px 10px;border:1px solid #ddd;border-radius:var(--radius);background:#fff;cursor:pointer}
-  .pill{border-radius:999px;padding:4px 10px}
-  .controls{display:flex;gap:6px;flex-wrap:wrap}
-  .inputRow{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
-  input, select{flex:1;padding:10px;border:1px solid #ddd;border-radius:var(--radius)}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;padding:16px;max-width:780px}
+  h1{font-size:22px;margin:0}
   .small{font-size:12px;color:#666}
-  .toolbar{position:sticky;bottom:0;background:#fff;padding:10px 0;border-top:1px solid #eee;display:flex;gap:8px;flex-wrap:wrap}
+  .row{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap}
+  input{flex:1;padding:10px;border:1px solid #ddd;border-radius:var(--r)}
+  button{padding:10px 12px;border:1px solid #ddd;border-radius:var(--r);background:#fff;cursor:pointer}
+  #grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px}
+  .card{padding:14px;border:1px solid #eee;border-radius:var(--r);text-align:left}
+  .name{font-weight:600;margin-bottom:6px}
+  .host{font-size:12px;color:#666}
+  .actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
 </style>
 </head>
 <body>
 <h1>Staples</h1>
-<small class="small">v11</small>
+<small class="small">links v12</small>
 
-<div class="tabs">
-  <div id="tabBuy" class="tab active">Buy</div>
-  <div id="tabStaples" class="tab">Staples</div>
+<div class="row">
+  <input id="search" placeholder="Search links…" />
 </div>
 
-<div id="screenBuy">
-  <div id="buyList"></div>
-  <div class="toolbar">
-    <button id="copyList">Copy list</button>
-    <button id="shopAll">Shop all</button>
-    <button id="clearBought">Mark all bought</button>
-    <button id="goStaples">+ Add staple</button>
-  </div>
+<div class="row">
+  <input id="newName" placeholder="Add a link (e.g., Grind — House Blend Pods)" />
+  <input id="newUrl" placeholder="https://example.com/product" />
+  <button id="add">Add</button>
+  <button id="importDemo">Import demo</button>
+  <button id="export">Export</button>
 </div>
 
-<div id="screenStaples" style="display:none">
-  <div class="inputRow">
-    <input id="newName" placeholder="Add new staple (e.g., Milk)" />
-    <input id="newQty" type="number" min="1" value="1" style="max-width:90px"/>
-    <select id="newUnit" style="max-width:130px">
-      <option value="">unit</option>
-      <option>pcs</option><option>pack</option><option>kg</option><option>L</option>
-    </select>
-    <button id="addStaple">Add</button>
-  </div>
-  <div class="inputRow">
-    <input id="search" placeholder="Search staples…" />
-  </div>
-  <div class="toolbar" style="position:static; border:none; padding:0; margin:8px 0;">
-    <button id="importCatalog">Import catalog</button>
-  </div>
-  <div id="staplesList"></div>
-  <p class="small">Tip: tap qty to bump; “+ Buy” adds it to today’s list.</p>
-</div>
+<div id="grid"></div>
 
 <script>
-const SKEY = 'staples.v1';
-let state = load();
+const SKEY = 'staples.links.v1';
+let links = load();
 
-function load(){ try { return JSON.parse(localStorage.getItem(SKEY)) || {items:[]}; } catch(e){ return {items:[]}; } }
-function save(){ localStorage.setItem(SKEY, JSON.stringify(state)); render(); }
+function load(){ try { return JSON.parse(localStorage.getItem(SKEY)) || []; } catch(e){ return []; } }
+function save(){ localStorage.setItem(SKEY, JSON.stringify(links)); render(); }
+function host(u){ try { return new URL(u).hostname.replace(/^www\\./,''); } catch(e){ return ''; } }
 function uid(){ return Math.random().toString(36).slice(2,9); }
 
-function addStaple(name, qty=1, unit=''){
-  if(!name.trim()) return;
-  state.items.push({
-    id: uid(), name: name.trim(),
-    defaultQty: +qty||1, unit,
-    retailer: "", productUrl: "",
-    notes:'', lastBoughtAt:null, buyNowQty:0
-  });
-  save();
-}
-
-function deleteStaple(id){
-  if(!confirm("Delete this staple?")) return;
-  state.items = state.items.filter(i => i.id !== id);
-  save();
-}
-
-function editStaple(id){
-  const it = state.items.find(i=>i.id===id); if(!it) return;
-  const newName = prompt("Name", it.name);
-  const newQty  = prompt("Default qty", it.defaultQty);
-  const newUnit = prompt("Unit (pcs/pack/kg/L or blank)", it.unit||"");
-  const newRetailer = prompt('Retailer (e.g., "nutsinbulk" or "grind", or blank)', it.retailer||"");
-  const newUrl  = prompt("Product URL (optional: paste exact item page)", it.productUrl||"");
-
-  if(newName !== null && newName.trim()) it.name = newName.trim();
-  if(newQty  !== null) it.defaultQty = Math.max(1, parseInt(newQty,10) || it.defaultQty);
-  if(newUnit !== null) it.unit = newUnit.trim();
-  if(newRetailer !== null) it.retailer = (newRetailer||"").toLowerCase();
-  if(newUrl  !== null) it.productUrl = newUrl.trim();
-  save();
-}
-
-function addToBuy(id, qty){
-  const it = state.items.find(i=>i.id===id); if(!it) return;
-  it.buyNowQty = (it.buyNowQty||0) + (qty||it.defaultQty||1);
-  save();
-}
-function bumpQty(id, list='staples'){
-  const it = state.items.find(i=>i.id===id); if(!it) return;
-  if(list==='staples'){ it.defaultQty = (it.defaultQty||1) + 1; }
-  else { it.buyNowQty = (it.buyNowQty||1) + 1; }
-  save();
-}
-function decreaseQty(id){
-  const it = state.items.find(i=>i.id===id); if(!it) return;
-  if((it.buyNowQty||0) > 1) it.buyNowQty -= 1;
-  else it.buyNowQty = 0;
-  save();
-}
-function decreaseDefaultQty(id){
-  const it = state.items.find(i=>i.id===id); if(!it) return;
-  it.defaultQty = Math.max(1, (it.defaultQty||1) - 1);
-  save();
-}
-function markBought(id){
-  const it = state.items.find(i=>i.id===id); if(!it) return;
-  it.lastBoughtAt = new Date().toISOString();
-  it.buyNowQty = 0;
-  save();
-}
-
-function copyCurrentList(){
-  const lines = state.items
-    .filter(i=>i.buyNowQty>0)
-    .map(i => `${i.name} ${i.buyNowQty}${i.unit? ' ' + i.unit : ''}`)
-    .join('\n');
-  navigator.clipboard.writeText(lines || '(empty)').then(()=> alert('List copied. Paste into your supermarket app.'));
-}
-
-function clearAllBought(){
-  state.items.forEach(i=>{ if(i.buyNowQty>0){ i.lastBoughtAt=new Date().toISOString(); i.buyNowQty=0; }});
-  save();
-}
-
-const retailerSearch = {
-  nutsinbulk: q => `https://www.nutsinbulk.co.uk/?q=${encodeURIComponent(q)}`,
-  grind: q => `https://grind.co.uk/collections/nespressopods`
-};
-
-function shopItem(id){
-  const it = state.items.find(i=>i.id===id); if(!it) return;
-  if (it.productUrl && it.productUrl.startsWith('http')) {
-    window.open(it.productUrl, "_blank"); return;
-  }
-  const r = (it.retailer || "").toLowerCase();
-  if (retailerSearch[r]) {
-    window.open(retailerSearch[r](`${it.name} ${it.unit||""}`.trim()), "_blank");
-    return;
-  }
-  const name = it.name.toLowerCase();
-  if (/(seed|nut|almond|walnut|cashew|hazelnut|pistachio|sunflower|pumpkin)/.test(name)) {
-    window.open(retailerSearch.nutsinbulk(it.name), "_blank");
-  } else {
-    window.open(retailerSearch.grind(it.name), "_blank");
-  }
-}
-
-function upsertItem(o){
-  const name = (o.name||"").trim();
-  if(!name) return;
-  let it = state.items.find(i => i.name.toLowerCase() === name.toLowerCase());
-  if(!it){
-    it = { id: uid(), name, defaultQty: o.defaultQty||1, unit: o.unit||"", notes:"", lastBoughtAt:null, buyNowQty:0, retailer:o.retailer||"", productUrl:o.productUrl||"" };
-    state.items.push(it);
-  } else {
-    if(o.defaultQty) it.defaultQty = +o.defaultQty;
-    if(o.unit !== undefined) it.unit = o.unit;
-    if(o.retailer !== undefined) it.retailer = o.retailer;
-    if(o.productUrl !== undefined) it.productUrl = o.productUrl;
-  }
-}
-
-function importCatalog(){
-  const items = [
-    { name:"Grind — House Blend Pods", defaultQty:100, unit:"pcs", retailer:"grind", productUrl:"https://grind.co.uk/products/grindnespressopodsbulk" },
-    { name:"Grind — House Decaf Pods", defaultQty:100, unit:"pcs", retailer:"grind", productUrl:"https://grind.co.uk/products/grindnespressopodsbulk" },
-    { name:"Organic Walnut Halves",     defaultQty:1, unit:"kg", retailer:"nutsinbulk", productUrl:"https://www.nutsinbulk.co.uk/product/organic-walnut-halves" },
-    { name:"Whole Pecan Halves",        defaultQty:1, unit:"kg", retailer:"nutsinbulk", productUrl:"https://www.nutsinbulk.co.uk/product/whole-pecan-halves" },
-    { name:"Blanched Hazelnut Pieces",  defaultQty:1, unit:"kg", retailer:"nutsinbulk", productUrl:"https://www.nutsinbulk.co.uk/product/blanched-hazelnut-pieces" },
-    { name:"Whole Cashew Nuts",         defaultQty:1, unit:"kg", retailer:"nutsinbulk", productUrl:"https://www.nutsinbulk.co.uk/product/whole-cashew-nuts" },
-    { name:"Pine Nuts Kernels",         defaultQty:1, unit:"kg", retailer:"nutsinbulk", productUrl:"https://www.nutsinbulk.co.uk/product/pine-nuts-kernels" },
-    { name:"Sunflower Seeds",           defaultQty:1, unit:"kg", retailer:"nutsinbulk", productUrl:"https://www.nutsinbulk.co.uk/product/sunflower-seeds" }
-  ];
-  items.forEach(upsertItem);
-  save();
-  alert("Imported your Grind + Nuts in Bulk staples. Use 🛒 Shop on each item to jump to the exact pages.");
-}
-
 function render(){
-  const buy = document.getElementById('buyList');
-  const buyItems = state.items.filter(i=>i.buyNowQty>0).sort((a,b)=>a.name.localeCompare(b.name));
-  buy.innerHTML = buyItems.map(i=>`
-    <div class="row">
-      <div class="name"><strong>${i.name}</strong> <span class="small">${i.unit||''}</span><br>
-        <span class="small">${i.lastBoughtAt ? 'last: ' + new Date(i.lastBoughtAt).toLocaleDateString() : ''}</span>
-      </div>
-      <div class="controls">
-        <button onclick="decreaseQty('${i.id}')">−</button>
-        <button class="pill" onclick="bumpQty('${i.id}','buy')">+${i.buyNowQty}</button>
-        <button onclick="shopItem('${i.id}')">🛒 Shop</button>
-        <button onclick="markBought('${i.id}')">Bought</button>
-      </div>
-    </div>
-  `).join('') || '<p class="small">Your Buy list is empty. Add items from Staples.</p>';
-
-  const q = document.getElementById('search').value?.toLowerCase() || '';
-  const list = document.getElementById('staplesList');
-  const staples = state.items.filter(i=>i.name.toLowerCase().includes(q)).sort((a,b)=>a.name.localeCompare(b.name));
-  list.innerHTML = staples.map(i=>`
-    <div class="row">
-      <div class="name"><strong>${i.name}</strong> <span class="small">${i.defaultQty}${i.unit? ' ' + i.unit : ''}</span></div>
-      <div class="controls">
-        <button onclick="decreaseDefaultQty('${i.id}')">−</button>
-        <button class="pill" onclick="bumpQty('${i.id}','staples')">+${i.defaultQty}</button>
-        <button onclick="addToBuy('${i.id}')">+ Buy</button>
-        <button onclick="shopItem('${i.id}')">🛒 Shop</button>
-        <button onclick="editStaple('${i.id}')">✏️ Edit</button>
-        <button onclick="deleteStaple('${i.id}')">❌</button>
+  const q = (document.getElementById('search').value||'').toLowerCase();
+  const grid = document.getElementById('grid');
+  const list = links
+    .filter(l => l.name.toLowerCase().includes(q) || (l.url||'').toLowerCase().includes(q));
+  grid.innerHTML = list.map((l, idx) => `
+    <div class="card">
+      <div class="name">${l.name}</div>
+      <div class="host">${host(l.url)}</div>
+      <div class="actions">
+        <button onclick="openLink(${idx})">Open</button>
+        <button onclick="editLink(${idx})">✏️ Edit</button>
+        <button onclick="deleteLink(${idx})">❌ Delete</button>
       </div>
     </div>
-  `).join('') || '<p class="small">No staples yet — add above.</p>';
+  `).join('') || '<p class="small">No links yet — add above.</p>';
 }
 
-const tabBuy = document.getElementById('tabBuy');
-const tabStaples = document.getElementById('tabStaples');
-const screenBuy = document.getElementById('screenBuy');
-const screenStaples = document.getElementById('screenStaples');
-
-function show(tab){
-  if(tab==='buy'){ tabBuy.classList.add('active'); tabStaples.classList.remove('active'); screenBuy.style.display='block'; screenStaples.style.display='none'; }
-  else { tabStaples.classList.add('active'); tabBuy.classList.remove('active'); screenStaples.style.display='block'; screenBuy.style.display='none'; }
+function openLink(i){
+  const l = links[i]; if(!l || !l.url) return alert('No URL set.');
+  window.open(l.url, '_blank');
 }
-tabBuy.onclick=()=>show('buy');
-tabStaples.onclick=()=>show('staples');
-document.getElementById('goStaples').onclick=()=>show('staples');
 
-document.getElementById('addStaple').onclick=()=>{
-  addStaple(document.getElementById('newName').value, document.getElementById('newQty').value, document.getElementById('newUnit').value);
-  document.getElementById('newName').value=''; document.getElementById('newQty').value=1; document.getElementById('newUnit').value='';
+function addLink(name, url){
+  name = (name||'').trim();
+  url = (url||'').trim();
+  if(!name || !url) return;
+  const idx = links.findIndex(x => x.name.toLowerCase() === name.toLowerCase());
+  if(idx >= 0){ links[idx].url = url; } else { links.push({ id: uid(), name, url }); }
+  save();
+}
+
+function editLink(i){
+  const l = links[i]; if(!l) return;
+  const newName = prompt('Name', l.name);
+  const newUrl  = prompt('URL', l.url);
+  if(newName !== null && newName.trim()) l.name = newName.trim();
+  if(newUrl  !== null && newUrl.trim())  l.url  = newUrl.trim();
+  save();
+}
+
+function deleteLink(i){
+  if(!confirm('Delete this link?')) return;
+  links.splice(i,1);
+  save();
+}
+
+function importDemo(){
+  const demo = [
+    { name:"Grind — House Blend Pods", url:"https://grind.co.uk/products/grindnespressopodsbulk" },
+    { name:"Grind — House Decaf Pods", url:"https://grind.co.uk/products/grindnespressopodsbulk" },
+    { name:"Organic Walnut Halves",    url:"https://www.nutsinbulk.co.uk/product/organic-walnut-halves" },
+    { name:"Whole Pecan Halves",       url:"https://www.nutsinbulk.co.uk/product/whole-pecan-halves" },
+    { name:"Blanched Hazelnut Pieces", url:"https://www.nutsinbulk.co.uk/product/blanched-hazelnut-pieces" },
+    { name:"Whole Cashew Nuts",        url:"https://www.nutsinbulk.co.uk/product/whole-cashew-nuts" },
+    { name:"Pine Nuts Kernels",        url:"https://www.nutsinbulk.co.uk/product/pine-nuts-kernels" },
+    { name:"Sunflower Seeds",          url:"https://www.nutsinbulk.co.uk/product/sunflower-seeds" }
+  ];
+  demo.forEach(d => addLink(d.name, d.url));
+  alert('Imported demo links.');
+}
+
+function exportLinks(){
+  const text = JSON.stringify(links, null, 2);
+  navigator.clipboard.writeText(text).then(()=> alert('Exported to clipboard.'));
+}
+
+document.getElementById('add').onclick = () => {
+  addLink(document.getElementById('newName').value, document.getElementById('newUrl').value);
+  document.getElementById('newName').value='';
+  document.getElementById('newUrl').value='';
 };
-document.getElementById('search').oninput=render;
-document.getElementById('copyList').onclick=copyCurrentList;
-document.getElementById('clearBought').onclick=clearAllBought;
-
-const importBtn = document.getElementById('importCatalog');
-if(importBtn) importBtn.onclick = importCatalog;
-
-document.getElementById('shopAll').onclick = () => {
-  const buyItems = state.items.filter(i=>i.buyNowQty>0);
-  buyItems.slice(0,5).forEach(i => shopItem(i.id));
-};
+document.getElementById('importDemo').onclick = importDemo;
+document.getElementById('export').onclick = exportLinks;
+document.getElementById('search').oninput = render;
 
 render();
 </script>
@@ -276,20 +132,7 @@ render();
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').then(reg => {
     reg.update();
-    if (reg.waiting) {
-      reg.waiting.postMessage('SKIP_WAITING');
-    }
-    reg.addEventListener('updatefound', () => {
-      const newSW = reg.installing;
-      newSW?.addEventListener('statechange', () => {
-        if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
-          newSW.postMessage('SKIP_WAITING');
-        }
-      });
-    });
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      window.location.reload();
-    });
+    navigator.serviceWorker.addEventListener('controllerchange', () => location.reload());
   });
 }
 </script>
