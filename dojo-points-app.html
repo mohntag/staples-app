@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Dojo Points">
+<meta name="theme-color" content="#f4ede0">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAAQSUlEQVR4nO3du7ks1RWF0UYfWZADjmxFQBaQA0GQg5QFEciWowhwMPEIQMbRd3V1+lVdXY+11hzDRtBHxvxr7zp97zd//vHbBYA8fzn7AwBwDgEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAj17dkfAPby+y8/LvnHvvv5H3t/EqhJAGhs4cRv4oe/3+3Erz8d9zFgQwJAG0fO/Uuu2yAJtCAA1FV28Z/6lAQ9oCYBoJC+i/+YHlCTAHCyqaP/wNc9EANOJACcI3D3b/oSAyXgeALAcYz+A44FHE8A2N2A3X/wO6C7/ueUgF0JAHsZsPunUwJ2JQBsz/Rv7qMEMsC2BIDN2P29ORCwLQFgA6b/YA4EbEIAWM/un8uBgDcJAGuY/lIcCFhHAHiN6S9LBniVALCU6W9BBlhOAHjO9LcjAywhADxi+luTAR4TAG4z/WPIAPcIAJ+Z/k8O/oOAdiIDXBMA/sf0jycDfE0AuFxMfxgZ4MNfzv4AnM/6Z5pxtcU7nACimf5wjgLhBCCU6ecLGYjlCiiR9eeaG6FATgBZTD8POAqkcQIIYv1ZwlEghxNABNPPSxwFQjgBzGf9WcdRYDwBGM76vyl8BMN//PFcAY1l+tmE66DBnABmsv5sy1FgJAEYyPqzBw2YxxXQKKafXbkOGsYJYA7rzzEcBcYQgCGsP0fSgBkEYALrz/E0YADvAHoz/ZzIK4HunAAas/5U4CjQlwB0Zf2pQwOaEoCWrD/VaEBHAtCP9T+MUXuJ/7vaEYBmrD+VaUAvAtCJ9ac+DWjkmz//+O3sz8Ai1n+d735+a4/M2Tp+N7QFAejB+j/15tC/Shie0oD6BKAB63/t4LlfQhKuaUBxAlCd9f+i4OjfIwZfaEBlAlCa9W80+veIgQaUJQB1Ja//gN2/llwCDahJAIrKXP+Ru38tswQaUJAAVJS2/iG7fy2tBBpQjQCUk7P+sbt/LacEGlCKANQSsv6m/6aQDGhAHQJQyPj1t/sLjS+BBhQhAFXMXn/Tv8LsDGhABQJQwuD1N/1vGpwBDTidvxOYvZj+TXys5OAMcCIngPPNe/w3/TuZlwGHgHP5+wBOZv1Zbt5czktaL04AZxq2/qb/MMN2c17YuhCA00xaf9N/ikkZ0IBTeAnMW0z/ibwf5k3eAZxjxuO/9a9gxrOzjJ3CFdAJBqy/6S9owIbOiFkjTgBHs/7sZMB6DmhYLwLAa6x/ZQMawJFcAR2q9eO/6W+k9aO0jB3GCeA41p/DtN7Q1vXqRQAOYv05mAbwlO8B8Ijpb80XBXjMCeAITR//rf8MTY8CunUAAdid9ed0GsBNAsAN1n+epg1gVwKwr46P/9Z/qo4NcAjYle8B7Kjd+pv+EO1WtWO6WnAC4L+sfw57ygcB2Euvx3/rn6ZXA9odWboQAKx/qF4NYA8CsItGj//WP1mjBjgE7EEAtmf9aUQDkglALuvPh0YNYFsCsLEuj//Wn691aYBDwLYEACCUAGzJ4z99OQQEEoA41p97ujSArQjAZlo8/lt/HmvRAIeArQhAEOvPEi0awCYEYBv1H/+tP8vVb4BDwCYEACCUAGzA4z/zOAQkEID5rD/r1G8AbxKAdxV//Lf+vKN4AxwC3iQAAKEE4C0e/xnPIWAwARjL+rOV4g1gNQFYr/Ljv/VnW5Ub4BCwmgAAhBKAlTz+k8YhYB4BmMb6s5/KDWAFAQAIJQBrlL3/8fjP3soeAtwCrSAAAKEE4GUe/wnnEDCGAACEEoAhPP5zpLKHAF4iAK+pef9j/TlezQa4BXqJAACEEoAXePyHrzkEdCcAAKEEoDeP/5yr5iGAhQRgqZr3P8A1t0ALCUBjHv+pwCGgLwEACCUAixS8//H4Tx0FDwFugZYQAIBQAgAQSgBacv9DNQVvgXhKAJ4r+AIAeMprgKcEoB+P/9TkENCOAACEEoAn3P9AX26BHhOAZtz/UJlboF4EACCUAACEEoBHqr0AcP9DfdVugbwGeEAAAEIJAEAoAWjD/Q9dVLsF4h4BAAglAHdVewMMrOM98D0C0IP7H3pxC9SCAACEEgCAUAIAEEoAbiv1BtgLADoq9RrAe+CbBAAg1LdnfwA41Pd//dvjf+Df//rnMZ8ETicARHi6+9f/pBIwngBU5wXAO5bv/oP/rRKs9utPP7p8r0wAmOmd6b/5r5IB5vES+IZSvwLEChuu/67/To7kLHJNAJhmv6XWAIZxBcQcBwy06yAmcQJgiCMfzx0FmEEASvMrQAsdv8gasFCp7wPziQDQ3llbrAF0JwAAoQSA3s59DHcIoDUBoLEK+1vhM8A6AkBXdZa3zieBlwjAZ74GDFP5MvAnAkBL1R66q30eWEIA6vIlAGbwVYCyBAAglADQT837lpqfCh4QAIBQAgAQSgBopvJNS+XPBtcEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAJr597/+efZHuKvyZ4NrAgAQSgAAQgkA/dS8aan5qeABAQAIJQB1/f6Lv0qbCX74+z/O/gjcJgC0VO2+pdrngSUE4LPvfva0AjP9+pNT9f8RALqq89Bd55PASwSAxiosb4XPAOsIAL2du7/Wn9YEACCUANDeWY/hHv/pTgBK81WAhY7fYuu/kC8BVCYADHHkIlt/Zvj27A8Am/nY5e//+re9/xMwgxMA0+y30dafYQTgBl8G7m6Ppbb+3fka8DVXQMy04XWQ6WcqAaju919+dCJZ7ct2ryiB3X+fXwEqTgCIsLwEdp8cAkAW+w5feAkMEEoAbit17e77wHRU6gWAXwG6SQAAQgkAQCgBAAglAD14DUAvpV4AcI8A3FXqPTCwmjfA9wgAQCgBaMMtEF24/+lCAABCCQBAKAF4pNp7YLdA1Fft/scb4AcEACCUAACEEoBm3AJRWbX7Hx4TgCeqvQYAlvMC4DEBAAglAP24BaIm9z/tCMBzboGgI/c/TwlASw4BVOPxvyMBAAglAAChBGCRgq8B3AJRR8H7Hy8AlhAAgFAC0JhDABUUfPxnIQFYquAtEHCT+5+FBKA3hwDO5fG/NQEACCUAL6h5C+QQwFlqPv67/1lOAABCCcBrHALgg8f/AQRgCA3gSDXXn1cJAEAoAXhZzVugi0MARyn7+O/+51UCABBKANZwCCCWx/9JBAAglABM4xDAfso+/rOOAKxU9hboogHso/L6u/9ZRwAAQgnAeg4B5PD4P5IAjKUBbKXy+vMOAXhL5UPARQPYQvH19/j/DgEACCUA73IIYDCP/7MJwHwawDrF15/3CcAGih8CLhrA6+qvv8f/9wkAQCgB2IZDAJN4/A8hAEE0gCXqrz9bEYDN1D8EXDSAZ1qsv8f/rQhAHA3gnhbrz4YEYEstDgEXDeCWLuvv8X9DAgAQSgA25hBARx7/MwlALg3gQ5f1Z3MCsL0uh4CLBtBq/T3+b04AdqEBtGD9wwkAGhCq0fqzEwHYS6NDwEUD8vRaf4//OxEA/ksDcvRaf/bzzZ9//Hb2Z5is46r2Orvwko7T7/F/P04A++o4ph2jxRLWn08EgBs0YJ6O68/eBGB3HQ8BFw2Ypen6e/zfmwAcQQM4kfXnnm/P/gCU9tGApgGj6fRzGCeAg7TeUEeBjlqvv8f/YwjAcTSAw1h/lvA9gKN1X9LWGUvQevov1v9YTgC8pnvAZuu+/hxMAI424AlaA2oasP4e/w/mCugcMzZ0QMxmGDD9F+t/BieAc8yYzhkZ6876s5rvAfAWXxQ40Yzp50SugM407AlaBg4zbPo9/p9FAE42rAEXGdjZsOm/WP9TeQdwsnlzOS9pdVh/tuUEUMLI0ZzXthPNm/6L9S/AS2D24v3wJkZOP0U4AVQx8hDwhQysMHv6Pf5XIACFzG7ARQYWmz39F+tfhgDUMr4BH5TgpvG7/8H61yEA5YQ04CIDXwmZ/ov1L0YAKsppwIfYEuTs/gfrX43vAVSUNohpwftg/TmdABQV1YCoHzaT9a9JAOoyi7PlbGLOT9qOAJSmAXRn/SsTgOrGN2D8D5jM+hcnAA2YyKlm7+Psn24GAehhagOm/lxY/xYEoA1bSRfWvwsB6EQD5pm3lfN+osEEoJlJDZj0s/DB+vciAP3YzWHGjOaYHySHALSkAVRj/TsSgK66N6D75+dr1r8pAWjMho7RekBbf/hw/k7g3j4akPmnaXI609+dE8AE7Y4C7T4w16z/AAIwhEntrtee9vq03CMAc3RpQJfPyT3WfwzvAEbxSoBdmf5hnAAG8ojdVPF5Lf7xWEEAZirbgLIfjMes/0jf/PnHb2d/BnZU7TpIAJ6q9pfFm/7BnACGM7i8w/rPJgDz1WlAnU/CEtZ/PFdAQU6/DhKAhU6/BTL9IZwAgthflrD+OXwPIMuJXxSQn/pMfxongES2uLhThtj6B3ICCHXwUUByKjP9sQQgmj86IpzpD+cKCI/nFR0wzdYfJwAul52PAgJTjenng+8B8NnmGRCA1Tb/QoDp52tOAHzmxcBIpp9rAsBtW2XA4//pTD/3uALiuXcyIABveucWyPTzmBMAz7kUasf0s4QAsNSKDHj8P57pZzlXQKyxMAMCsImFt0Cmn1c5AbDGktOA9T+M6WcdAWC9LxPv9cAp7D5vcgXEZj5lwAlgQ59ugUw/m3ACYDNfHwis/x7sPttyAgAI5U8DBQglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAg1H8AKcAbSKgj/5EAAAAASUVORK5CYII=">
+<title>Dojo Points</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4ede0; --paper-deep:#ece1cf; --ink:#22201d; --ink-soft:#5a544c;
+    --amber:#d97742; --amber-deep:#b85a2a; --teal:#3f8a7e; --teal-deep:#2c6b60; --line:#cdbfa8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    font-family:"Zen Maru Gothic",sans-serif;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(0,0,0,.025) 0, transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(0,0,0,.03) 0, transparent 50%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+    color:var(--ink); overflow:hidden;
+    display:flex;flex-direction:column; height:100dvh;
+    padding-top:env(safe-area-inset-top); padding-bottom:env(safe-area-inset-bottom);
+  }
+  header{text-align:center;padding:18px 16px 8px;flex-shrink:0;}
+  .enso{font-family:"Shippori Mincho B1",serif;font-size:13px;letter-spacing:.5em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:2px;padding-left:.5em;}
+  h1{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:30px;letter-spacing:.04em;}
+  h1 .dot{color:var(--amber);}
+  .arena{flex:1;display:flex;flex-direction:column;gap:14px;padding:8px 16px 16px;min-height:0;}
+  .card{flex:1;border-radius:26px;position:relative;display:flex;flex-direction:column;overflow:hidden;border:2px solid var(--line);background:var(--paper-deep);box-shadow:0 6px 0 rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.5);}
+  .belt{height:9px;flex-shrink:0;background:var(--amber);}
+  .card.b .belt{background:var(--teal);}
+  .card-top{display:flex;align-items:center;justify-content:space-between;padding:12px 18px 0;}
+  .name{font-weight:700;font-size:21px;color:var(--ink);border:none;background:transparent;outline:none;max-width:62%;padding:3px 6px;border-radius:8px;font-family:"Zen Maru Gothic",sans-serif;}
+  .name:focus{background:rgba(255,255,255,.55);}
+  .crown{font-size:20px;opacity:0;transition:opacity .25s;}
+  .leading .crown{opacity:1;}
+  .score-wrap{flex:1;display:flex;align-items:center;justify-content:center;}
+  .score{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:clamp(64px,22vw,120px);line-height:.9;color:var(--amber-deep);font-variant-numeric:tabular-nums;transition:transform .12s ease;}
+  .card.b .score{color:var(--teal-deep);}
+  .pop{transform:scale(1.18);}
+  .controls{display:flex;gap:10px;padding:0 16px 16px;}
+  .btn{border:none;cursor:pointer;font-family:"Zen Maru Gothic",sans-serif;font-weight:900;border-radius:18px;transition:transform .08s ease, filter .15s ease;color:#fff;display:flex;align-items:center;justify-content:center;}
+  .btn:active{transform:translateY(2px) scale(.98);filter:brightness(1.05);}
+  .plus{flex:1;height:64px;font-size:34px;background:var(--amber);box-shadow:0 4px 0 var(--amber-deep);}
+  .card.b .plus{background:var(--teal);box-shadow:0 4px 0 var(--teal-deep);}
+  .minus{width:64px;height:64px;font-size:30px;background:transparent;color:var(--ink-soft);border:2px solid var(--line);box-shadow:none;}
+  .minus:active{transform:translateY(2px) scale(.98);background:rgba(0,0,0,.04);}
+  footer{flex-shrink:0;display:flex;justify-content:center;padding:0 16px 18px;}
+  .reset{background:transparent;border:1.5px solid transparent;color:var(--ink-soft);font-family:"Zen Maru Gothic",sans-serif;font-size:14px;font-weight:500;letter-spacing:.03em;padding:10px 22px;border-radius:14px;cursor:pointer;}
+  .reset:active{background:rgba(0,0,0,.05);}
+  .reset.armed{color:var(--amber-deep);border-color:var(--amber);font-weight:700;}
+  .hint{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.65;padding-bottom:6px;}
+</style>
+</head>
+<body>
+  <header>
+    <div class="enso">道場 &middot; the dojo</div>
+    <h1>Dojo Points<span class="dot">.</span></h1>
+  </header>
+  <main class="arena">
+    <section class="card a" id="card0">
+      <div class="belt"></div>
+      <div class="card-top">
+        <input class="name" id="name0" value="Student One" maxlength="14" spellcheck="false" aria-label="Name">
+        <span class="crown">&#128081;</span>
+      </div>
+      <div class="score-wrap"><div class="score" id="score0">0</div></div>
+      <div class="controls">
+        <button class="btn minus" data-i="0" data-d="-1" aria-label="Remove point">&minus;</button>
+        <button class="btn plus" data-i="0" data-d="1" aria-label="Add point">+</button>
+      </div>
+    </section>
+    <section class="card b" id="card1">
+      <div class="belt"></div>
+      <div class="card-top">
+        <input class="name" id="name1" value="Student Two" maxlength="14" spellcheck="false" aria-label="Name">
+        <span class="crown">&#128081;</span>
+      </div>
+      <div class="score-wrap"><div class="score" id="score1">0</div></div>
+      <div class="controls">
+        <button class="btn minus" data-i="1" data-d="-1" aria-label="Remove point">&minus;</button>
+        <button class="btn plus" data-i="1" data-d="1" aria-label="Add point">+</button>
+      </div>
+    </section>
+  </main>
+  <div class="hint">Tap a name to rename &middot; scores save automatically</div>
+  <footer><button class="reset" id="reset">Reset both</button></footer>
+<script>
+  const KEY="dojo-state-v1";
+  let state={names:["Student One","Student Two"],points:[0,0]};
+  function load(){
+    try{const s=localStorage.getItem(KEY); if(s) state=JSON.parse(s);}catch(e){}
+    render();
+  }
+  function save(){ try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){} }
+  function render(){
+    for(let i=0;i<2;i++){
+      document.getElementById("name"+i).value=state.names[i];
+      document.getElementById("score"+i).textContent=state.points[i];
+    }
+    const lead=state.points[0]===state.points[1]?-1:(state.points[0]>state.points[1]?0:1);
+    const any=state.points[0]>0||state.points[1]>0;
+    document.getElementById("card0").classList.toggle("leading",any&&lead===0);
+    document.getElementById("card1").classList.toggle("leading",any&&lead===1);
+  }
+  function change(i,d){
+    state.points[i]=Math.max(0,state.points[i]+d);
+    const el=document.getElementById("score"+i);
+    el.textContent=state.points[i];
+    el.classList.remove("pop");void el.offsetWidth;el.classList.add("pop");
+    if(navigator.vibrate)navigator.vibrate(d>0?12:6);
+    render();save();
+  }
+  document.querySelectorAll(".btn").forEach(b=>b.addEventListener("click",()=>change(+b.dataset.i,+b.dataset.d)));
+  document.querySelectorAll(".name").forEach((inp,i)=>{
+    inp.addEventListener("blur",()=>{state.names[i]=inp.value.trim()||("Student "+(i?"Two":"One"));inp.value=state.names[i];save();});
+    inp.addEventListener("keydown",e=>{if(e.key==="Enter")inp.blur();});
+  });
+  let armed=false,t=null;const reset=document.getElementById("reset");
+  reset.addEventListener("click",()=>{
+    if(!armed){armed=true;reset.textContent="Tap again to reset";reset.classList.add("armed");t=setTimeout(()=>{armed=false;reset.textContent="Reset both";reset.classList.remove("armed");},2500);return;}
+    clearTimeout(t);armed=false;reset.textContent="Reset both";reset.classList.remove("armed");
+    state.points=[0,0];render();save();
+  });
+  load();
+</script>
+</body>
+</html>
