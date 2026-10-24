@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Wörter Raten">
+<meta name="theme-color" content="#f4ede0">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<title>Wörter Raten</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4ede0; --paper-deep:#ece1cf; --ink:#22201d; --ink-soft:#5a544c;
+    --amber:#d97742; --amber-deep:#b85a2a; --teal:#3f8a7e;
+    --line:#cdbfa8; --correct:#6fa065; --present:#e0a23d; --absent:#a79c88;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{font-family:"Zen Maru Gothic",sans-serif;background:var(--paper);
+    background-image:radial-gradient(circle at 18% 12%,rgba(0,0,0,.025) 0,transparent 45%),radial-gradient(circle at 85% 88%,rgba(0,0,0,.03) 0,transparent 50%);
+    color:var(--ink);overflow:hidden;display:flex;flex-direction:column;height:100dvh;
+    padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);}
+  header{text-align:center;padding:14px 14px 4px;flex-shrink:0;}
+  .kicker{font-family:"Shippori Mincho B1",serif;font-size:11px;letter-spacing:.42em;color:var(--ink-soft);text-transform:uppercase;padding-left:.42em;}
+  h1{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:25px;letter-spacing:.03em;}
+  h1 .dot{color:var(--amber);}
+  .stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:0;padding:6px 10px;}
+  #board{display:grid;grid-template-rows:repeat(6,1fr);gap:7px;}
+  .brow{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+  .tile{width:54px;height:54px;border:2px solid var(--line);border-radius:10px;background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:"Shippori Mincho B1",Georgia,serif;font-weight:800;font-size:28px;color:var(--ink);
+    text-transform:uppercase;transition:transform .1s,background .2s,border-color .2s,color .2s;}
+  .tile.filled{border-color:var(--ink-soft);animation:pop .12s ease;}
+  @keyframes pop{0%{transform:scale(.9)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+  .tile.correct{background:var(--correct);border-color:var(--correct);color:#fff;}
+  .tile.present{background:var(--present);border-color:var(--present);color:#fff;}
+  .tile.absent{background:var(--absent);border-color:var(--absent);color:#fff;}
+  .brow.shake{animation:shake .4s;}
+  @keyframes shake{10%,90%{transform:translateX(-2px)}30%,70%{transform:translateX(5px)}50%{transform:translateX(-7px)}}
+  .msg{min-height:22px;font-weight:700;font-size:15px;color:var(--amber-deep);text-align:center;}
+  .pad{flex-shrink:0;padding:6px 6px 10px;}
+  .krow{display:flex;gap:5px;justify-content:center;margin-bottom:6px;}
+  .key{flex:1 1 auto;max-width:34px;height:50px;border:none;background:var(--paper-deep);border:1.5px solid var(--line);
+    border-radius:9px;font-family:"Zen Maru Gothic","Segoe UI",system-ui,sans-serif;font-weight:900;font-size:16px;color:var(--ink);
+    cursor:pointer;box-shadow:0 2px 0 rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;padding:0;}
+  .key:active{transform:translateY(2px);box-shadow:none;}
+  .key.wide{max-width:56px;font-size:18px;background:var(--ink);color:#fff;border-color:var(--ink);box-shadow:0 2px 0 #000;}
+  .key.correct{background:var(--correct);color:#fff;border-color:var(--correct);box-shadow:0 2px 0 #567d4e;}
+  .key.present{background:var(--present);color:#fff;border-color:var(--present);box-shadow:0 2px 0 #b57f26;}
+  .key.absent{background:var(--absent);color:#fff;border-color:var(--absent);box-shadow:0 2px 0 #857b69;}
+  .newbtn{display:block;margin:2px auto 0;background:transparent;border:1.5px solid var(--line);color:var(--ink-soft);
+    font-family:"Zen Maru Gothic";font-weight:700;font-size:13px;padding:8px 20px;border-radius:12px;cursor:pointer;}
+  .win{position:fixed;inset:0;background:rgba(244,237,224,.93);display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:10;padding:20px;text-align:center;}
+  .win.show{display:flex;animation:fade .3s ease;}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .win .party{font-size:60px;animation:bpop .5s ease;}
+  @keyframes bpop{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+  .win h2{font-family:"Shippori Mincho B1",serif;font-size:27px;color:var(--amber-deep);}
+  .win .wd{font-family:"Shippori Mincho B1",Georgia,serif;font-size:34px;font-weight:800;letter-spacing:.12em;color:var(--ink);}
+  .win button{background:var(--teal);color:#fff;border:none;font-family:"Zen Maru Gothic";font-weight:900;font-size:17px;padding:12px 30px;border-radius:16px;box-shadow:0 4px 0 #2c6b60;cursor:pointer;}
+</style>
+</head>
+<body>
+  <header>
+    <div class="kicker">Vier Buchstaben</div>
+    <h1>Wörter Raten<span class="dot">.</span></h1>
+  </header>
+  <main class="stage">
+    <div id="board"></div>
+    <div class="msg" id="msg"></div>
+  </main>
+  <div class="pad">
+    <div id="keyboard"></div>
+    <button class="newbtn" id="newbtn">Neues Wort</button>
+  </div>
+  <div class="win" id="win">
+    <div class="party" id="winEmoji">🎉</div>
+    <h2 id="winText">Super!</h2>
+    <div class="wd" id="winWord"></div>
+    <button id="again">Neues Wort</button>
+  </div>
+<script>
+const WORDS = ["MAUS", "BAUM", "HAUS", "BALL", "AUTO", "ENTE", "NASE", "HAND", "EULE", "HASE", "IGEL", "BOOT", "ROSE", "MOND", "BROT", "BUCH", "BETT", "BERG", "TIER", "HERZ", "MUND", "BEIN", "AUGE", "HOSE", "FRAU", "MANN", "KIND", "WORT", "WALD", "GRAS", "GOLD", "RING", "GELD", "BURG", "HUHN", "ESEL", "WOLF", "WURM", "MEER", "WIND", "WELT", "FELD", "ZELT", "SALZ", "SAFT", "REIS", "NAME", "BABY", "TURM", "BLAU", "GELB", "ROSA", "GRÜN", "KÄSE", "LÖWE"];
+const LEN=4, ROWS=6;
+let answer, row, col, board, keyState, over;
+
+function newGame(force){
+  answer = force || WORDS[Math.floor(Math.random()*WORDS.length)];
+  row=0; col=0; over=false; keyState={};
+  board=Array.from({length:ROWS},()=>Array(LEN).fill(""));
+  buildBoard(); buildKeyboard(); setMsg("");
+  document.getElementById("win").classList.remove("show");
+}
+function buildBoard(){
+  const b=document.getElementById("board"); b.innerHTML="";
+  for(let r=0;r<ROWS;r++){
+    const rd=document.createElement("div"); rd.className="brow"; rd.dataset.r=r;
+    for(let c=0;c<LEN;c++){
+      const t=document.createElement("div"); t.className="tile"; t.dataset.r=r; t.dataset.c=c;
+      rd.appendChild(t);
+    }
+    b.appendChild(rd);
+  }
+}
+const KB=[["Q","W","E","R","T","Z","U","I","O","P","Ü"],
+          ["A","S","D","F","G","H","J","K","L","Ö","Ä"],
+          ["⏎","Y","X","C","V","B","N","M","⌫"]];
+function buildKeyboard(){
+  const kb=document.getElementById("keyboard"); kb.innerHTML="";
+  KB.forEach(rowk=>{
+    const kr=document.createElement("div"); kr.className="krow";
+    rowk.forEach(k=>{
+      const btn=document.createElement("button"); btn.className="key"; btn.textContent=k;
+      if(k==="⏎"||k==="⌫") btn.classList.add("wide");
+      else if(keyState[k]) btn.classList.add(keyState[k]);
+      btn.onclick=()=>press(k);
+      kr.appendChild(btn);
+    });
+    kb.appendChild(kr);
+  });
+}
+function setMsg(m){document.getElementById("msg").textContent=m;}
+function tileEl(r,c){return document.querySelector(`.tile[data-r="${r}"][data-c="${c}"]`);}
+
+function press(k){
+  if(over) return;
+  if(k==="⌫"){ if(col>0){col--;board[row][col]="";const t=tileEl(row,col);t.textContent="";t.classList.remove("filled");} return; }
+  if(k==="⏎"){ submit(); return; }
+  if(col<LEN){ board[row][col]=k; const t=tileEl(row,col); t.textContent=k; t.classList.add("filled"); col++; }
+}
+function score(guess){
+  const res=Array(LEN).fill("absent"), cnt={};
+  for(const c of answer) cnt[c]=(cnt[c]||0)+1;
+  for(let i=0;i<LEN;i++) if(guess[i]===answer[i]){res[i]="correct";cnt[guess[i]]--;}
+  for(let i=0;i<LEN;i++){ if(res[i]==="correct") continue; const c=guess[i]; if(cnt[c]>0){res[i]="present";cnt[c]--;} }
+  return res;
+}
+const rank={absent:0,present:1,correct:2};
+function submit(){
+  if(col<LEN){ const rd=document.querySelector(`.brow[data-r="${row}"]`); rd.classList.remove("shake"); void rd.offsetWidth; rd.classList.add("shake"); setMsg("Noch "+(LEN-col)+" Buchstaben"); return; }
+  const guess=board[row].join("");
+  const res=score(guess);
+  res.forEach((st,i)=>{ const t=tileEl(row,i); t.classList.add(st); const L=guess[i];
+    if(!keyState[L]||rank[st]>rank[keyState[L]]) keyState[L]=st; });
+  buildKeyboard();
+  if(navigator.vibrate) navigator.vibrate(10);
+  if(guess===answer){ over=true; setTimeout(()=>finish(true),350); return; }
+  row++; col=0;
+  if(row>=ROWS){ over=true; setTimeout(()=>finish(false),350); }
+  else setMsg("");
+}
+function finish(won){
+  document.getElementById("winEmoji").textContent=won?"🎉":"🙈";
+  document.getElementById("winText").textContent=won?"Super gemacht!":"Schade!";
+  document.getElementById("winWord").textContent=won?answer:("Das Wort war: "+answer);
+  document.getElementById("win").classList.add("show");
+  if(navigator.vibrate) navigator.vibrate(won?[30,40,30,40,60]:[60]);
+}
+document.getElementById("newbtn").onclick=()=>newGame();
+document.getElementById("again").onclick=()=>newGame();
+window.addEventListener("keydown",e=>{
+  if(over&&e.key!=="Enter") return;
+  const k=e.key;
+  if(k==="Enter") press("⏎");
+  else if(k==="Backspace") press("⌫");
+  else { const u=k.toUpperCase(); if(/^[A-ZÄÖÜ]$/.test(u)) press(u); }
+});
+newGame();
+</script>
+</body>
+</html>
