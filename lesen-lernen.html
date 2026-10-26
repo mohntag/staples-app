@@ -74,7 +74,7 @@
 <script>
 const ITEMS=[{"e": "🍎", "de": "Apfel", "en": "apple"}, {"e": "🐶", "de": "Hund", "en": "dog"}, {"e": "🐱", "de": "Katze", "en": "cat"}, {"e": "☀️", "de": "Sonne", "en": "sun"}, {"e": "🌙", "de": "Mond", "en": "moon"}, {"e": "🐟", "de": "Fisch", "en": "fish"}, {"e": "🌳", "de": "Baum", "en": "tree"}, {"e": "🏠", "de": "Haus", "en": "house"}, {"e": "🚗", "de": "Auto", "en": "car"}, {"e": "⭐", "de": "Stern", "en": "star"}, {"e": "🌸", "de": "Blume", "en": "flower"}, {"e": "🐭", "de": "Maus", "en": "mouse"}, {"e": "🐻", "de": "Bär", "en": "bear"}, {"e": "🦆", "de": "Ente", "en": "duck"}, {"e": "🥚", "de": "Ei", "en": "egg"}, {"e": "🐮", "de": "Kuh", "en": "cow"}, {"e": "🦁", "de": "Löwe", "en": "lion"}, {"e": "🐸", "de": "Frosch", "en": "frog"}, {"e": "🐝", "de": "Biene", "en": "bee"}, {"e": "🍌", "de": "Banane", "en": "banana"}, {"e": "🚌", "de": "Bus", "en": "bus"}, {"e": "🐷", "de": "Schwein", "en": "pig"}, {"e": "🌈", "de": "Regenbogen", "en": "rainbow"}, {"e": "❤️", "de": "Herz", "en": "heart"}, {"e": "🐘", "de": "Elefant", "en": "elephant"}, {"e": "🍦", "de": "Eis", "en": "ice"}, {"e": "🐑", "de": "Schaf", "en": "sheep"}, {"e": "🦋", "de": "Schmetterling", "en": "butterfly"}, {"e": "🦊", "de": "Fuchs", "en": "fox"}, {"e": "🐧", "de": "Pinguin", "en": "penguin"}, {"e": "🦒", "de": "Giraffe", "en": "giraffe"}, {"e": "🐍", "de": "Schlange", "en": "snake"}, {"e": "🐴", "de": "Pferd", "en": "horse"}, {"e": "🐒", "de": "Affe", "en": "monkey"}, {"e": "🐼", "de": "Panda", "en": "panda"}, {"e": "🦉", "de": "Eule", "en": "owl"}, {"e": "🐢", "de": "Schildkröte", "en": "turtle"}, {"e": "🦔", "de": "Igel", "en": "hedgehog"}, {"e": "🐰", "de": "Hase", "en": "rabbit"}, {"e": "🐌", "de": "Schnecke", "en": "snail"}, {"e": "🕷️", "de": "Spinne", "en": "spider"}, {"e": "🍓", "de": "Erdbeere", "en": "strawberry"}, {"e": "🍊", "de": "Orange", "en": "orange"}, {"e": "🍇", "de": "Trauben", "en": "grapes"}, {"e": "🥕", "de": "Karotte", "en": "carrot"}, {"e": "🍄", "de": "Pilz", "en": "mushroom"}, {"e": "🍞", "de": "Brot", "en": "bread"}, {"e": "🧀", "de": "Käse", "en": "cheese"}, {"e": "🚲", "de": "Fahrrad", "en": "bicycle"}, {"e": "🚂", "de": "Zug", "en": "train"}, {"e": "⛵", "de": "Boot", "en": "boat"}, {"e": "✈️", "de": "Flugzeug", "en": "plane"}, {"e": "🚀", "de": "Rakete", "en": "rocket"}, {"e": "🏰", "de": "Schloss", "en": "castle"}, {"e": "👑", "de": "Krone", "en": "crown"}, {"e": "🎈", "de": "Ballon", "en": "balloon"}, {"e": "🌻", "de": "Sonnenblume", "en": "sunflower"}, {"e": "👟", "de": "Schuh", "en": "shoe"}, {"e": "🧦", "de": "Socke", "en": "sock"}, {"e": "🎩", "de": "Hut", "en": "hat"}, {"e": "🔑", "de": "Schlüssel", "en": "key"}, {"e": "🪑", "de": "Stuhl", "en": "chair"}, {"e": "🛏️", "de": "Bett", "en": "bed"}, {"e": "🚪", "de": "Tür", "en": "door"}, {"e": "⏰", "de": "Uhr", "en": "clock"}, {"e": "🐯", "de": "Tiger", "en": "tiger"}, {"e": "🐺", "de": "Wolf", "en": "wolf"}, {"e": "🦓", "de": "Zebra", "en": "zebra"}, {"e": "🦛", "de": "Nilpferd", "en": "hippo"}, {"e": "🦏", "de": "Nashorn", "en": "rhino"}, {"e": "🐊", "de": "Krokodil", "en": "crocodile"}, {"e": "🐳", "de": "Wal", "en": "whale"}, {"e": "🐬", "de": "Delfin", "en": "dolphin"}, {"e": "🦈", "de": "Hai", "en": "shark"}, {"e": "🐙", "de": "Krake", "en": "octopus"}, {"e": "🦐", "de": "Garnele", "en": "shrimp"}, {"e": "🦀", "de": "Krebs", "en": "crab"}, {"e": "🐚", "de": "Muschel", "en": "shell"}, {"e": "🦜", "de": "Papagei", "en": "parrot"}, {"e": "🦢", "de": "Schwan", "en": "swan"}, {"e": "🦩", "de": "Flamingo", "en": "flamingo"}, {"e": "🐓", "de": "Hahn", "en": "rooster"}, {"e": "🦃", "de": "Truthahn", "en": "turkey"}, {"e": "🕊️", "de": "Taube", "en": "dove"}, {"e": "🐿️", "de": "Eichhörnchen", "en": "squirrel"}, {"e": "🦇", "de": "Fledermaus", "en": "bat"}, {"e": "🐨", "de": "Koala", "en": "koala"}, {"e": "🐪", "de": "Kamel", "en": "camel"}, {"e": "🦙", "de": "Lama", "en": "llama"}, {"e": "🐐", "de": "Ziege", "en": "goat"}, {"e": "🦌", "de": "Hirsch", "en": "deer"}, {"e": "🐉", "de": "Drache", "en": "dragon"}, {"e": "🍐", "de": "Birne", "en": "pear"}, {"e": "🍋", "de": "Zitrone", "en": "lemon"}, {"e": "🍒", "de": "Kirsche", "en": "cherry"}, {"e": "🍑", "de": "Pfirsich", "en": "peach"}, {"e": "🍍", "de": "Ananas", "en": "pineapple"}, {"e": "🥝", "de": "Kiwi", "en": "kiwi"}, {"e": "🥥", "de": "Kokosnuss", "en": "coconut"}, {"e": "🍅", "de": "Tomate", "en": "tomato"}, {"e": "🥔", "de": "Kartoffel", "en": "potato"}, {"e": "🌽", "de": "Mais", "en": "corn"}, {"e": "🥦", "de": "Brokkoli", "en": "broccoli"}, {"e": "🥒", "de": "Gurke", "en": "cucumber"}, {"e": "🧅", "de": "Zwiebel", "en": "onion"}, {"e": "🍆", "de": "Aubergine", "en": "eggplant"}, {"e": "🫐", "de": "Blaubeere", "en": "blueberry"}, {"e": "🍈", "de": "Melone", "en": "melon"}, {"e": "🍰", "de": "Kuchen", "en": "cake"}, {"e": "🍪", "de": "Keks", "en": "cookie"}, {"e": "🍩", "de": "Donut", "en": "donut"}, {"e": "🍫", "de": "Schokolade", "en": "chocolate"}, {"e": "🧁", "de": "Muffin", "en": "muffin"}, {"e": "🥨", "de": "Brezel", "en": "pretzel"}, {"e": "🧇", "de": "Waffel", "en": "waffle"}, {"e": "🍕", "de": "Pizza", "en": "pizza"}, {"e": "🍔", "de": "Burger", "en": "burger"}, {"e": "🍟", "de": "Pommes", "en": "fries"}, {"e": "🥛", "de": "Milch", "en": "milk"}, {"e": "🍵", "de": "Tee", "en": "tea"}];
 const TITLE={de:"Lesen lernen",en:"Learn to Read"};
-let lang="de", stars=0, recent=[];
+let lang="de", stars=0, recent=[], locked=false;
 
 try{ const v=localStorage.getItem("read-stars"); if(v) stars=parseInt(v)||0; }catch(e){}
 
@@ -124,6 +124,7 @@ function pickItem(pool){
   return it;
 }
 function newQuestion(){
+  locked=false;
   const stage=document.getElementById("stage"); stage.innerHTML="";
   const cfg=TIERS[tierFor(stars)];
   const pool=poolForTier(cfg);
@@ -153,9 +154,25 @@ function newQuestion(){
     stage.appendChild(box);
   }
 }
+function penalise(){
+  if(stars<=0) return;
+  setStars(stars-1);
+  const el=document.getElementById("stars"); el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop");
+}
 function answer(btn, correct){
-  if(correct){ btn.classList.add("right"); const before=tierFor(stars); award(); if(tierFor(stars)>before) levelUp(); setTimeout(newQuestion,750); }
-  else { btn.classList.add("wrong"); setTimeout(()=>btn.classList.remove("wrong"),400); if(navigator.vibrate) navigator.vibrate(40); }
+  if(locked) return;
+  if(correct){
+    locked=true;
+    document.querySelectorAll(".choice").forEach(c=>{ c.disabled=true; c.style.pointerEvents="none"; });
+    btn.classList.add("right");
+    const before=tierFor(stars); award(); if(tierFor(stars)>before) levelUp();
+    setTimeout(newQuestion,750);
+  } else {
+    if(btn.disabled || btn.classList.contains("wrong")) return;
+    btn.classList.add("wrong"); btn.disabled=true; btn.style.pointerEvents="none";
+    penalise();
+    if(navigator.vibrate) navigator.vibrate(40);
+  }
 }
 function refresh(){
   document.querySelectorAll(".tg").forEach(b=>b.classList.toggle("on",b.dataset.lang===lang));
